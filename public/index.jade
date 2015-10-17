@@ -1,16 +1,45 @@
 doctype html
+
 html(lang="en")
   head
-    title = "Notepad Live!"
-  body
+    title Notepad Live
+
+  body(style = "text-align:center;")
+
     h1 Notepad Live!
-    #developer
-      p.
-        #{PORT}
+
+    #center_area
+      #selectId_list(style = "margin:0 40% 0 40%")
+        table(width = "100%")
+          tbody
+
+            - if(idCount > 0)
+              tr
+                td(colspan = 2)
+                  |Open saved project, Select id:
+              tr
+                td
+                  - var isSelected = 'selected'
+                  select(name='id')
+                    - for(var x =1;x<=idCount;x++)
+                      option(value=x, selected=isSelected)= x
+                      - if(x == 1)
+                        - isSelected = null
+                td
+                  button(id  = "submit_id") Go
+              tr
+                td(colspan = 2)
+                  |OR
+
+            tr
+              td(colspan = 2)
+                button(id = "create_new") Create New Project
+
+
     script(src = '/socket.io/socket.io.js')
     script(type='text/javascript').
       var socket = io.connect("#{baseUrl}");
-      socket.on('abc',function(object)
+      socket.on('loading homepage',function(object)
         {
           document.getElementById("developer").innerHTML = object.developer;
         });
