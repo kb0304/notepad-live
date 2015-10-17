@@ -1,0 +1,32 @@
+{
+  "name": "notepad-live",
+  "version": "0.0.1",
+  "description": "",
+  "author": "Karan Bedi <karanbedi0304@gmail.com>",
+  "contributors":
+    [{
+      "name": "Karan Bedi",
+      "email": "karanbedi0304@gmail.com"
+    }],
+  "main": "lib/foo.js",
+  "repository":
+    {
+      "type": "git",
+      "url": "https://github.com/kb0304/notepad-live"
+    },
+  "keywords":
+    [
+      "notepad",
+      "live",
+      "realtime"
+     ],
+  "dependencies": 
+    {
+      "express": "4.*",
+      "socket.io": "1.3.7",
+      "http":"*",
+      "path":"*"
+    },
+  "private": false,
+  "license": "MIT"
+}
