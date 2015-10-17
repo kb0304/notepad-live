@@ -43,3 +43,24 @@ exports.set_idCount = function(utils,conf,client,id_count,callback)
   });
 }
 
+
+//Fetches the value of project with a given id.
+exports.fetch_projectValue = function(utils,conf,client,id,callback)
+{
+  utils.get_key(client,conf.dbKey_projectId(id),function(err,reply)
+  {
+    if(err)
+      callback(err,reply)
+    else
+    {
+      console.log("Project with id "+id+" fetched.");
+      if(reply == null)
+      {
+        console.log("Project with id: "+id+" dosn't exist, its a new project");
+        reply = "";
+      }
+      callback(err,reply);
+    }
+  });
+}
+

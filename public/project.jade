@@ -1,0 +1,26 @@
+doctype html
+
+html(lang="en")
+  head
+    title Notepad Live
+
+  body(style = "text-align:center;")
+
+    h1 Notepad Live!
+
+    #center_area
+      #textarea_div(style = "margin:0 28% 0 28%")
+        textarea(onkeyup = "update_textarea(#{id})", id = "id_textarea", style = "resize:none;width:100%;",rows = 20)
+          |#{value}
+      a(href = "#{baseUrl}")
+        button(id = "home_href") Back to Home
+
+    script(src = '/socket.io/socket.io.js')
+    
+    script(type='text/javascript').
+      function update_textarea(id)
+      {
+        var socket = io.connect("#{baseUrl}");
+        var value = document.getElementById('id_textarea').value;
+        socket.emit('update_project',#{id},value);
+      }

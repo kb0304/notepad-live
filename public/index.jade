@@ -5,7 +5,6 @@ html(lang="en")
     title Notepad Live
 
   body(style = "text-align:center;")
-
     h1 Notepad Live!
 
     #center_area
@@ -18,28 +17,22 @@ html(lang="en")
                 td(colspan = 2)
                   |Open saved project, Select id:
               tr
-                td
-                  - var isSelected = 'selected'
-                  select(name='id')
-                    - for(var x =1;x<=idCount;x++)
-                      option(value=x, selected=isSelected)= x
-                      - if(x == 1)
-                        - isSelected = null
-                td
-                  button(id  = "submit_id") Go
+                form(id = "submitId",action = "#{baseUrl}#{submitId_actionUrl}")
+                  td
+                    - var isSelected = 'selected'
+                    select(name='id',id = "projectId")
+                      - for(var x =1;x<=idCount;x++)
+                        option(value=x, selected=isSelected)= x
+                        - if(x == 1)
+                          - isSelected = null
+                  td
+                    input(type = "submit", id = "submitId")
               tr
                 td(colspan = 2)
                   |OR
 
             tr
               td(colspan = 2)
-                button(id = "create_new") Create New Project
-
-
-    script(src = '/socket.io/socket.io.js')
-    script(type='text/javascript').
-      var socket = io.connect("#{baseUrl}");
-      socket.on('loading homepage',function(object)
-        {
-          document.getElementById("developer").innerHTML = object.developer;
-        });
+                a(href = "#{baseUrl}#{submitId_actionUrl}?id=#{newId}")
+                  button(id = "create_new") Create New Project
+    

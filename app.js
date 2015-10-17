@@ -23,7 +23,7 @@ console.log('Server running on '+conf.PORT);
 //Serving index.html on localhost:PORT/ url
 app.get('/', function (req, res) 
 {
-  var path_to_index = path.join(__dirname + conf.PATH_TO_INDEX_FILE);  
+  var path_to_index = path.join(__dirname + conf.PATH_TO_INDEX_TEMPLATE);  
   notepadLive.get_idCount(utils,conf,client,function(err,idCount)
   {
     if(err)
@@ -37,15 +37,74 @@ app.get('/', function (req, res)
       var options = {};
       options.idCount = idCount;
       options.PORT = conf.PORT;
-      options.baseUrl = conf.BASE_URL;
+      options.baseUrl = conf.baseUrl;
+      options.submitId_actionUrl = conf.submitId_actionUrl;
+      options.newId = Number(idCount)+1;
       res.render(path_to_index,options);
     }
   });
 });
 
-//On connection 
+
+//Gets id as a get parameter, and returns the corresponding textarea
+app.get(conf.submitId_actionUrl,function(req,res)
+{
+  if(!req.query.id)
+  {
+    res.send("Error.");
+  }
+  else
+  {
+    notepadLive.get_idCount(utils,conf,client,function(err,idCount)
+    {
+      if(err)
+        console.log("Error: "+err);
+      else
+      {
+        var path_to_project = path.join(__dirname+conf.PATH_TO_PROJECT_TEMPLATE)
+        var id = req.query.id;
+        if(id>idCount)
+          notepadLive.set_idCount(utils,conf,client,id,function(err)
+          {
+            if(err) console.log("Error: "+err);
+         });
+        var options = {
+          id : id,
+          baseUrl : conf.baseUrl,
+        };
+        notepadLive.fetch_projectValue(utils,conf,client,id,function(err,value)
+        {
+          if(err)
+            console.log("ERROR: "+err);
+          else
+          {
+            options.value = value;
+            res.render(path_to_project,options);
+          }
+        });
+      }
+    });
+  }
+});
+
+
+
+
+//Creating a constant live connection 
 io.on('connection', function (socket) 
 {
-  socket.emit('abc', { developer: 'Karan Bedi' });
+
+  //Listening to event update_textarea, which recieves value of a textarea with given id when it is updated and updates it in db.
+  socket.on('update_project',function(id,value)
+  {
+    console.log("Updating project with id: "+id+" with value: \n"+value+"\n");
+    utils.set_key(client,conf.dbKey_projectId(id),value,function(err,reply)
+    {
+      if(err)
+      {
+        console.log("ERROR: "+err);
+      }
+    });
+  });
 });
 
