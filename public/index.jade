@@ -1,0 +1,16 @@
+doctype html
+html(lang="en")
+  head
+    title = "Notepad Live!"
+  body
+    h1 Notepad Live!
+    #developer
+      p.
+        #{PORT}
+    script(src = '/socket.io/socket.io.js')
+    script(type='text/javascript').
+      var socket = io.connect("#{baseUrl}");
+      socket.on('abc',function(object)
+        {
+          document.getElementById("developer").innerHTML = object.developer;
+        });
