@@ -72,6 +72,7 @@ app.get(conf.submitId_actionUrl,function(req,res)
             {
               if(err) console.log("Error: "+err);
             });
+          }
             var options = {
               id : id,
               baseUrl : conf.baseUrl,
@@ -86,7 +87,6 @@ app.get(conf.submitId_actionUrl,function(req,res)
                 res.render(path_to_project,options);
               }
             });
-          }
         }
         else
         {
