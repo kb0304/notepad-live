@@ -64,25 +64,34 @@ app.get(conf.submitId_actionUrl,function(req,res)
         var path_to_project = path.join(__dirname+conf.PATH_TO_PROJECT_TEMPLATE)
         var id = Number(req.query.id);
         idCount = Number(idCount);
-        if(id>idCount)
-          notepadLive.set_idCount(utils,conf,client,id,function(err)
-          {
-            if(err) console.log("Error: "+err);
-         });
-        var options = {
-          id : id,
-          baseUrl : conf.baseUrl,
-        };
-        notepadLive.fetch_projectValue(utils,conf,client,id,function(err,value)
+        if(id <= (idCount + 1))
         {
-          if(err)
-            console.log("ERROR: "+err);
-          else
+          if(id == (idCount+1))
           {
-            options.value = value;
-            res.render(path_to_project,options);
+            notepadLive.set_idCount(utils,conf,client,id,function(err)
+            {
+              if(err) console.log("Error: "+err);
+            });
+            var options = {
+              id : id,
+              baseUrl : conf.baseUrl,
+            };
+            notepadLive.fetch_projectValue(utils,conf,client,id,function(err,value)
+            {
+              if(err)
+                console.log("ERROR: "+err);
+              else
+              {
+                options.value = value;
+                res.render(path_to_project,options);
+              }
+            });
           }
-        });
+        }
+        else
+        {
+          res.send("You can't manually enter id.");
+        }
       }
     });
   }
