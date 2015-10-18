@@ -62,7 +62,8 @@ app.get(conf.submitId_actionUrl,function(req,res)
       else
       {
         var path_to_project = path.join(__dirname+conf.PATH_TO_PROJECT_TEMPLATE)
-        var id = req.query.id;
+        var id = Number(req.query.id);
+        idCount = Number(idCount);
         if(id>idCount)
           notepadLive.set_idCount(utils,conf,client,id,function(err)
           {
